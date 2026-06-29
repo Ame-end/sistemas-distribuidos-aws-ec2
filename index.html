@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistemas Distribuidos — UNSIJ</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: #000010;
+            color: white;
+            font-family: 'Courier New', monospace;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* ESTRELLAS */
+        .stars {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle linear infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.4); }
+        }
+
+        /* PLANETA GIRATORIO */
+        .planet-container {
+            position: fixed;
+            top: -80px;
+            right: -80px;
+            z-index: 0;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .planet {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%,
+                #4a9eff,
+                #1a3a8a 40%,
+                #0a1a4a 70%,
+                #050d2a);
+            box-shadow:
+                0 0 40px rgba(74, 158, 255, 0.4),
+                0 0 80px rgba(74, 158, 255, 0.2),
+                inset -30px -30px 60px rgba(0,0,0,0.6);
+            position: relative;
+        }
+
+        .planet::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: -40%;
+            width: 180%; height: 30px;
+            background: rgba(74, 158, 255, 0.15);
+            border-radius: 50%;
+            transform: translateY(-50%) rotateX(75deg);
+            border: 2px solid rgba(74, 158, 255, 0.3);
+        }
+
+        .planet::after {
+            content: '';
+            position: absolute;
+            top: 20%; left: 15%;
+            width: 40%; height: 25%;
+            background: rgba(255,255,255,0.07);
+            border-radius: 50%;
+            filter: blur(8px);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(20px) rotate(5deg); }
+        }
+
+        /* NAVE ESPACIAL */
+        .rocket {
+            position: fixed;
+            bottom: 15%;
+            left: -80px;
+            font-size: 2.5rem;
+            animation: fly 12s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes fly {
+            0% { left: -80px; bottom: 15%; }
+            50% { bottom: 40%; }
+            100% { left: 110%; bottom: 15%; }
+        }
+
+        /* CONTENIDO */
+        .content {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        /* BADGE SUPERIOR */
+        .badge {
+            background: rgba(74, 158, 255, 0.15);
+            border: 1px solid rgba(74, 158, 255, 0.4);
+            border-radius: 20px;
+            padding: 6px 20px;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            color: #4a9eff;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            animation: pulse-border 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-border {
+            0%, 100% { border-color: rgba(74, 158, 255, 0.4); }
+            50% { border-color: rgba(74, 158, 255, 0.9); }
+        }
+
+        /* TÍTULO PRINCIPAL */
+        .main-title {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 900;
+            text-align: center;
+            line-height: 1.1;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ffffff 0%, #4a9eff 50%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.4rem);
+            color: #4a9eff;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 50px;
+            opacity: 0.8;
+        }
+
+        /* CARDS */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            max-width: 900px;
+            width: 100%;
+            margin-bottom: 50px;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(74, 158, 255, 0.2);
+            border-radius: 16px;
+            padding: 28px 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .card:hover {
+            background: rgba(74, 158, 255, 0.1);
+            border-color: rgba(74, 158, 255, 0.6);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(74, 158, 255, 0.15);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .card-title {
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            color: #4a9eff;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .card-value {
+            font-size: 1.1rem;
+            color: #e0e0e0;
+            font-weight: bold;
+        }
+
+        /* BARRA DE ESTADO */
+        .status-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(0, 255, 100, 0.08);
+            border: 1px solid rgba(0, 255, 100, 0.25);
+            border-radius: 30px;
+            padding: 10px 25px;
+            margin-bottom: 50px;
+            font-size: 0.85rem;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: #00ff64;
+            border-radius: 50%;
+            animation: blink 1.5s ease-in-out infinite;
+            box-shadow: 0 0 8px #00ff64;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .status-text { color: #00ff64; }
+
+        /* INFO UNIVERSIDAD */
+        .university-section {
+            max-width: 700px;
+            text-align: center;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 35px 40px;
+            margin-bottom: 40px;
+        }
+
+        .university-section h2 {
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            color: #a855f7;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            font-size: 0.9rem;
+        }
+
+        .info-row:last-child { border-bottom: none; }
+        .info-label { color: #888; }
+        .info-value { color: #e0e0e0; font-weight: bold; }
+
+        /* FOOTER */
+        .footer {
+            font-size: 0.75rem;
+            color: #444;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* METEOROS */
+        .meteor {
+            position: fixed;
+            width: 2px;
+            height: 80px;
+            background: linear-gradient(to bottom, white, transparent);
+            animation: meteor-fall linear infinite;
+            opacity: 0;
+            z-index: 0;
+        }
+
+        @keyframes meteor-fall {
+            0% { opacity: 0; transform: translateY(-100px) rotate(45deg); }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(110vh) rotate(45deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ESTRELLAS -->
+    <div class="stars" id="stars"></div>
+
+    <!-- METEOROS -->
+    <div class="meteor" id="m1" style="left:15%; top:0; animation-duration:3s; animation-delay:0s;"></div>
+    <div class="meteor" id="m2" style="left:40%; top:0; animation-duration:4s; animation-delay:1.5s;"></div>
+    <div class="meteor" id="m3" style="left:70%; top:0; animation-duration:2.5s; animation-delay:3s;"></div>
+    <div class="meteor" id="m4" style="left:85%; top:0; animation-duration:3.5s; animation-delay:0.8s;"></div>
+
+    <!-- PLANETA -->
+    <div class="planet-container">
+        <div class="planet"></div>
+    </div>
+
+    <!-- NAVE -->
+    <div class="rocket">🚀</div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="content">
+
+        <div class="badge">⭐ Sistemas Distribuidos — AWS EC2</div>
+
+        <h1 class="main-title">DEEP SPACE<br>SERVER</h1>
+        <p class="subtitle">Universidad de la Sierra Juárez</p>
+
+        <div class="status-bar">
+            <div class="status-dot"></div>
+            <span class="status-text">SERVIDOR EN LÍNEA — MISIÓN ACTIVA</span>
+        </div>
+
+        <div class="cards">
+            <div class="card">
+                <span class="card-icon">🛰️</span>
+                <div class="card-title">Servidor</div>
+                <div class="card-value">Apache 2.4</div>
+            </div>
+            <div class="card">
+                <span class="card-icon">☁️</span>
+                <div class="card-title">Plataforma</div>
+                <div class="card-value">AWS EC2</div>
+            </div>
+            <div class="card">
+                <span class="card-icon">🖥️</span>
+                <div class="card-title">Instancia</div>
+                <div class="card-value">t3.micro</div>
+            </div>
+            <div class="card">
+                <span class="card-icon">🐧</span>
+                <div class="card-title">Sistema</div>
+                <div class="card-value">Ubuntu 26.04</div>
+            </div>
+        </div>
+
+        <div class="university-section">
+            <h2>🎓 Datos del Proyecto</h2>
+            <div class="info-row">
+                <span class="info-label">Universidad</span>
+                <span class="info-value">UNSIJ</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Carrera</span>
+                <span class="info-value">IDSSI</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Materia</span>
+                <span class="info-value">Sistemas Distribuidos</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Práctica</span>
+                <span class="info-value">Hosting Estático en AWS</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Región AWS</span>
+                <span class="info-value">US East — Ohio</span>
+            </div>
+        </div>
+
+        <p class="footer">⚡ Desplegado en la nube · AWS Free Tier · 2026</p>
+
+    </div>
+
+    <script>
+        // Generar estrellas aleatorias
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 200; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            const size = Math.random() * 2.5 + 0.5;
+            star.style.cssText = `
+                width: ${size}px;
+                height: ${size}px;
+                top: ${Math.random() * 100}%;
+                left: ${Math.random() * 100}%;
+                animation-duration: ${Math.random() * 4 + 2}s;
+                animation-delay: ${Math.random() * 4}s;
+            `;
+            starsContainer.appendChild(star);
+        }
+    </script>
+
+</body>
+</html>
