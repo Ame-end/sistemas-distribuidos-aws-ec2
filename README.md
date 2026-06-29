@@ -36,4 +36,3 @@ La página web tiene temática espacial con animaciones CSS, estrellas generadas
 
 ---
 
-## ⚙️ Configuración de la Infraestructura
