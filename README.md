@@ -12,6 +12,12 @@
 
 ---
 
+## 🌐 Presentación electrónica 
+
+**Accede aquí : https://docs.google.com/presentation/d/1hngXliPECmQOX49-t3QpRkF6Zoa4uKBMkTMl4Gs89hQ/edit?usp=sharing
+
+---
+
 ## Descripción del Proyecto
 
 Este proyecto consiste en el despliegue de una página web estática en una instancia EC2 de Amazon Web Services, utilizando exclusivamente servicios de la **capa gratuita (Free Tier)** de AWS.
