@@ -14,7 +14,7 @@
 
 ## 🌐 Presentación electrónica 
 
-**Accede aquí : https://docs.google.com/presentation/d/1hngXliPECmQOX49-t3QpRkF6Zoa4uKBMkTMl4Gs89hQ/edit?usp=sharing
+Accede aquí : https://docs.google.com/presentation/d/1hngXliPECmQOX49-t3QpRkF6Zoa4uKBMkTMl4Gs89hQ/edit?usp=sharing
 
 ---
 
